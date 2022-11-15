@@ -1,0 +1,26 @@
+name: test
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tailscale
+        uses: tailscale/github-action@v1
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+      - name: Import Secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: https://100.102.197.56:8200
+          caCertificate: ${{ secrets.VAULT_CA_CERT }}
+          method: github
+          githubToken: ${{ secrets.ELEVATED_TOKEN }}
+          secrets: |
+            kv/hello target | KV_HELLO
+      - name: read secret
+        run: |
+          echo "Hello $KV_HELLO"
