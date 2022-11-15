@@ -18,8 +18,7 @@ jobs:
           url: https://100.102.197.56:8200
           caCertificate: ${{ secrets.VAULT_CA_CERT }}
           tlsSkipVerify: true # cert doesnt cover tailnet
-          method: github
-          githubToken: ${{ secrets.ELEVATED_TOKEN }}
+          token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             kv/hello target | KV_HELLO
       - name: read secret
