@@ -15,15 +15,18 @@ func GetProject(client *dagger.Client) *dagger.Directory {
 }
 
 func AppBuild(client *dagger.Client, project *dagger.Directory, platform dagger.Platform, arch string) *dagger.Container {
+	greeting := GetVaultSecret(client, "greeting")
+
 	builder := client.Container().
-		From("golang:latest").
+		From("golang:1.19").
 		WithMountedDirectory("/src", project).
 		WithWorkdir("/src").
 		WithEnvVariable("CGO_ENABLED", "0").
 		WithEnvVariable("GOOS", "linux").
 		WithEnvVariable("GOARCH", arch).
+		WithSecretVariable("SECRET_GREETING", greeting).
 		Exec(dagger.ContainerExecOpts{
-			Args: []string{"go", "build", "-o", "hello"},
+			Args: []string{"sh", "-c", "go build -ldflags \"-X main.SecretGreeting=$SECRET_GREETING\" -o hello"},
 		})
 
 	// Build container on production base with build artifact

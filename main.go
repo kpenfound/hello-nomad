@@ -8,10 +8,12 @@ import (
 	"os"
 )
 
+var SecretGreeting string
+
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("got / request from %s\n", r.RemoteAddr)
-		io.WriteString(w, greeting())
+		io.WriteString(w, fmt.Sprintf("%s %s", greeting(), SecretGreeting))
 	})
 
 	err := http.ListenAndServe(":8080", nil)
@@ -23,7 +25,6 @@ func main() {
 	}
 }
 
-// TODO: get "hello from circleci/github/local" from build env
 func greeting() string {
 	return "Hello"
 }

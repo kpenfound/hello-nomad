@@ -20,6 +20,6 @@ jobs:
       - name: Setup QEMU
         run: |
           docker run --rm --privileged tonistiigi/binfmt:latest --install all
-      - name: Dagger Pipeline
+      - name: Dagger Pipeline #Docker login
       - run: |
         go run ci/main.go

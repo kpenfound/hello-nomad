@@ -1,4 +1,4 @@
-module github.com/kpenfound/hello-eks
+module github.com/kpenfound/hello-nomad
 
 go 1.19
 
