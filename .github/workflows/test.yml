@@ -12,15 +12,14 @@ jobs:
         uses: tailscale/github-action@v1
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-      - name: Import Secrets
-        uses: hashicorp/vault-action@v2
+      - name: Setup Go
+        uses: actions/setup-go@v3
         with:
-          url: https://100.102.197.56:8200
-          caCertificate: ${{ secrets.VAULT_CA_CERT }}
-          tlsSkipVerify: true # cert doesnt cover tailnet
-          token: ${{ secrets.VAULT_TOKEN }}
-          secrets: |
-            kv/hello target | KV_HELLO
-      - name: read secret
+          go-version: 1.19
+      - uses: actions/checkout@v3
+      - name: Setup QEMU
         run: |
-          echo "Hello $KV_HELLO"
+          docker run --rm --privileged tonistiigi/binfmt:latest --install all
+      - name: Dagger Pipeline
+      - run: |
+        go run ci/main.go

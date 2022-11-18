@@ -23,6 +23,7 @@ func main() {
 	}
 }
 
+// TODO: get "hello from circleci/github/local" from build env
 func greeting() string {
 	return "Hello"
 }
