@@ -17,13 +17,6 @@ func main() {
 	}
 	defer client.Close()
 
-	secret := utility.GetVaultSecret(client, "target")
-	txt, err := secret.Plaintext(ctx)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("Secret is: %s\n", txt)
-
 	// get project to build
 	project := utility.GetProject(client)
 
@@ -45,13 +38,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(addr)
 
-	// // deploy job
-	// err = deploy(ctx, addr)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	// deploy job
+	err = utility.DeployNomadJob(ctx, addr)
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Println("Updated hello-nomad job")
 }
