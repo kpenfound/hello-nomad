@@ -3,7 +3,7 @@ orbs:
   circleci-tailscale: threecomma/circleci-tailscale@1.0.0
 
 jobs:
-  ci:
+  cicd:
     docker:
       - image: cimg/go:1.19
     parameters:
@@ -12,8 +12,8 @@ jobs:
         default: TAILSCALE_AUTH_KEY
     steps:
       - checkout
-      # - setup_remote_docker:
-      #     docker_layer_caching: true
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Setup QEMU
           command: docker run --rm --privileged tonistiigi/binfmt:latest --install all
@@ -30,6 +30,6 @@ jobs:
           name: Dagger Pipeline
           command: go run ci/main.go
 workflows:
-  test:
+  cicd:
     jobs:
-      - ci
+      - cicd
