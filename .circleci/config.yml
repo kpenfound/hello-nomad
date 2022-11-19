@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Docker Login
           command: |
-            curl -o vault.zip https://releases.hashicorp.com/vault/1.12.1/vault_1.12.1_darwin_amd64.zip
+            curl -o vault.zip https://releases.hashicorp.com/vault/1.12.1/vault_1.12.1_linux_amd64.zip
             unzip vault.zip
             export DOCKER_USERNAME=$(./vault kv get -tls-skip-verify -field=docker_username kv/hello-nomad)
             export DOCKER_PASSWORD=$(./vault kv get -tls-skip-verify -field=docker_password kv/hello-nomad)
