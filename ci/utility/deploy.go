@@ -2,6 +2,7 @@ package utility
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"dagger.io/dagger"
@@ -10,7 +11,6 @@ import (
 
 const (
 	publishAddr = "kylepenfound/hello-nomad:latest"
-	nomadAddr   = "http://tycho.belt:4646"
 )
 
 func PublishImage(client *dagger.Client, ctx context.Context, variants []*dagger.Container) (string, error) {
@@ -23,7 +23,7 @@ func PublishImage(client *dagger.Client, ctx context.Context, variants []*dagger
 }
 
 func DeployNomadJob(ctx context.Context, imageref string) error {
-	cli, err := api.NewClient(&api.Config{Address: nomadAddr})
+	cli, err := api.NewClient(&api.Config{Address: os.Getenv("NOMAD_ADDR")})
 	if err != nil {
 		return err
 	}
