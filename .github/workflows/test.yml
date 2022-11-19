@@ -23,8 +23,8 @@ jobs:
           tlsSkipVerify: true # no option for tls server name
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
-            kv/hello-nomad docker_username | DOCKER_USERNAME ;
-            kv/hello-nomad docker_password | DOCKER_PASSWORD ;
+            kv/data/hello-nomad docker_username ;
+            kv/data/hello-nomad docker_password
       - name: Docker Login
         run: |
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
