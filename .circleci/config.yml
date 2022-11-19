@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  circleci-tailscale: threecomma/circleci-tailscale@1.0.0
+  circleci-tailscale: threecomma/circleci-tailscale@2.2.0
 
 jobs:
   cicd:
@@ -10,6 +10,9 @@ jobs:
       tailscale-auth-key:
         type: env_var_name
         default: TAILSCALE_AUTH_KEY
+      tailscale-version:
+        type: string
+        default: 1.32.2
     steps:
       - checkout
       - setup_remote_docker:
