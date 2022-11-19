@@ -1,11 +1,11 @@
-name: test
+name: cicd
 on:
   push:
     branches: [main]
 
 jobs:
-  test:
-    name: test
+  cicd:
+    name: cicd
     runs-on: ubuntu-latest
     steps:
       - name: Tailscale
@@ -16,6 +16,18 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: 1.19
+      - name: Get Registry Credentials
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          tlsSkipVerify: true # no option for tls server name
+          token: ${{ secrets.VAULT_TOKEN }}
+          secrets: |
+            kv/hello-nomad docker_username | DOCKER_USERNAME
+            kv/hello-nomad docker_password | DOCKER_PASSWORD
+      - name: Docker Login
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
       - uses: actions/checkout@v3
       - name: Setup QEMU
         run: |

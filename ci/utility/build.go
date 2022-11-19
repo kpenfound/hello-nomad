@@ -31,6 +31,9 @@ func AppBuild(client *dagger.Client, project *dagger.Directory, platform dagger.
 		WithEnvVariable("GOARCH", arch).
 		WithSecretVariable("SECRET_GREETING", greeting).
 		Exec(dagger.ContainerExecOpts{
+			Args: []string{"go test"},
+		}).
+		Exec(dagger.ContainerExecOpts{
 			Args: []string{"sh", "-c", "go build -ldflags \"-X main.SecretGreeting=$SECRET_GREETING\" -o hello"},
 		})
 
