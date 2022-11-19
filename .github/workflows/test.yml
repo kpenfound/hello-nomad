@@ -36,5 +36,6 @@ jobs:
         env:
           VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
           VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          NOMAD_ADDR: ${{ secrets.NOMAD_ADDR }}
         run: |
           go run ci/main.go
