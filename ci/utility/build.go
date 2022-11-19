@@ -2,7 +2,7 @@ package utility
 
 import "dagger.io/dagger"
 
-func GetProject(client *dagger.Client) *dagger.Directory {
+func GetBackend(client *dagger.Client) *dagger.Directory {
 	return client.Host().Workdir(dagger.HostWorkdirOpts{
 		Exclude: []string{
 			"ci/",
@@ -10,8 +10,13 @@ func GetProject(client *dagger.Client) *dagger.Directory {
 			".git",
 			".gitignore",
 			"README",
+			"website",
 		},
 	})
+}
+
+func GetFrontend(client *dagger.Client) *dagger.Directory {
+	return client.Host().Directory("website")
 }
 
 func AppBuild(client *dagger.Client, project *dagger.Directory, platform dagger.Platform, arch string) *dagger.Container {

@@ -17,8 +17,24 @@ func main() {
 	}
 	defer client.Close()
 
-	// get project to build
-	project := utility.GetProject(client)
+	// Backend CICD
+	err = backendBuildAndDeploy(ctx, client)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Updated hello-nomad job")
+
+	// Frontend CICD
+	err = frontendBuildAndDeploy(ctx, client)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Netlify site deployed")
+}
+
+func backendBuildAndDeploy(ctx context.Context, client *dagger.Client) error {
+	// get backend project to build
+	project := utility.GetBackend(client)
 
 	// Multiplatform image for amd64+arm64
 	platformToArch := map[dagger.Platform]string{
@@ -36,14 +52,14 @@ func main() {
 	// publish image
 	addr, err := utility.PublishImage(client, ctx, variants)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// deploy job
-	err = utility.DeployNomadJob(ctx, addr)
-	if err != nil {
-		panic(err)
-	}
+	return utility.DeployNomadJob(ctx, addr)
+}
 
-	fmt.Println("Updated hello-nomad job")
+func frontendBuildAndDeploy(ctx context.Context, client *dagger.Client) error {
+	project := utility.GetFrontend(client)
+	return utility.DeployNetlify(client, ctx, project)
 }
