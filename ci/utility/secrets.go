@@ -3,7 +3,6 @@ package utility
 import (
 	"fmt"
 	"os"
-	"strings"
 	"time"
 
 	"dagger.io/dagger"
@@ -40,7 +39,6 @@ func GetVaultSecret(client *dagger.Client, name string) *dagger.Secret {
 		WithEnvVariable("VAULT_TLS_SERVER_NAME", vaultTlsName). // Vault TLS
 		WithMountedDirectory("/tls", vaultCaCert).
 		WithEnvVariable("VAULT_CACERT", "/tls/cacert.pem").
-		WithEnvVariable("HTTPS_PROXY", strings.Replace(os.Getenv("HTTPS_PROXY"), "localhost", "host.docker.internal", 1)).
 		Exec(dagger.ContainerExecOpts{ // vault kv get -field={name} kv/hello-nomad
 			Args: []string{"vault", "kv", "get", fmt.Sprintf("-field=%s", name), appSecrets},
 		})
