@@ -26,5 +26,5 @@ func main() {
 }
 
 func greeting() string {
-	return "Greetings"
+	return "Hello"
 }
