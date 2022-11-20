@@ -15,12 +15,12 @@ jobs:
         default: 1.32.2
     steps:
       - checkout
-      - run:
-          name: Install Go
-          command: |
-            curl -L -o go1.19.3.linux-amd64.tar.gz https://go.dev/dl/go1.19.3.linux-amd64.tar.gz
-            tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
-            export PATH=$PATH:/usr/local/go/bin
+      # - run:
+      #     name: Install Go
+      #     command: |
+      #       curl -L -o go1.19.3.linux-amd64.tar.gz https://go.dev/dl/go1.19.3.linux-amd64.tar.gz
+      #       tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
+      #       export PATH=$PATH:/usr/local/go/bin
       - run:
           name: Setup QEMU
           command: docker run --rm --privileged tonistiigi/binfmt:latest --install all
