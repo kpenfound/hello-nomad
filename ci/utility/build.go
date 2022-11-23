@@ -3,7 +3,7 @@ package utility
 import "dagger.io/dagger"
 
 func GetBackend(client *dagger.Client) *dagger.Directory {
-	return client.Host().Workdir(dagger.HostWorkdirOpts{
+	return client.Host().Directory(".", dagger.HostDirectoryOpts{
 		Exclude: []string{
 			"ci/",
 			".vscode",
@@ -30,19 +30,15 @@ func AppBuild(client *dagger.Client, project *dagger.Directory, platform dagger.
 		WithEnvVariable("GOOS", "linux").
 		WithEnvVariable("GOARCH", arch).
 		WithSecretVariable("SECRET_GREETING", greeting).
-		Exec(dagger.ContainerExecOpts{
-			Args: []string{"go", "test"},
-		}).
-		Exec(dagger.ContainerExecOpts{
-			Args: []string{"sh", "-c", "go build -ldflags \"-X main.SecretGreeting=$SECRET_GREETING\" -o hello"},
-		})
+		WithExec([]string{"go", "test"}).
+		WithExec([]string{"sh", "-c", "go build -ldflags \"-X main.SecretGreeting=$SECRET_GREETING\" -o hello"})
 
 	// Build container on production base with build artifact
 	base := client.Container(dagger.ContainerOpts{Platform: platform}).
 		From("alpine")
 	// copy build artifact from builder image
-	base = base.WithFS(
-		base.FS().WithFile("/bin/hello",
+	base = base.WithRootfs(
+		base.Rootfs().WithFile("/bin/hello",
 			builder.File("/src/hello"),
 		)).
 		WithEntrypoint([]string{"/bin/hello"})

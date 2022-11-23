@@ -102,15 +102,11 @@ func DeployNetlify(client *dagger.Client, ctx context.Context, build *dagger.Dir
 
 	netlify := client.Container().
 		From("node:16").
-		Exec(dagger.ContainerExecOpts{
-			Args: []string{"npm", "install", "netlify-cli", "-g"},
-		}).
+		WithExec([]string{"npm", "install", "netlify-cli", "-g"}).
 		WithMountedDirectory("/build", build).
 		WithSecretVariable("NETLIFY_SITE_ID", site).
 		WithSecretVariable("NETLIFY_AUTH_TOKEN", token).
-		Exec(dagger.ContainerExecOpts{
-			Args: []string{"netlify", "deploy", "--dir", "/build"},
-		})
+		WithExec([]string{"netlify", "deploy", "--dir", "/build"})
 
 	_, err := netlify.ExitCode(ctx)
 	return err
