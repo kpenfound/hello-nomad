@@ -3,7 +3,7 @@ module github.com/kpenfound/hello-nomad
 go 1.19
 
 require (
-	dagger.io/dagger v0.4.1
+	dagger.io/dagger v0.4.2
 	github.com/hashicorp/nomad/api v0.0.0-20221118203636-78593daaeeb0
 	gotest.tools/v3 v3.0.3
 )
