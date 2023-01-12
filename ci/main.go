@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"dagger.io/dagger"
 	"github.com/kpenfound/hello-nomad/ci/utility"
@@ -11,13 +10,14 @@ import (
 
 func main() {
 	ctx := context.Background()
-	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
+	client, err := dagger.Connect(ctx)
 	if err != nil {
 		panic(err)
 	}
 	defer client.Close()
 
 	// Backend CICD
+	fmt.Println("Building and deploying backend...")
 	err = backendBuildAndDeploy(ctx, client)
 	if err != nil {
 		panic(err)
@@ -25,6 +25,7 @@ func main() {
 	fmt.Println("Updated hello-nomad job")
 
 	// Frontend CICD
+	fmt.Println("Building and deploying frontend...")
 	err = frontendBuildAndDeploy(ctx, client)
 	if err != nil {
 		panic(err)

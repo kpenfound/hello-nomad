@@ -42,6 +42,7 @@ func GetVaultSecret(client *dagger.Client, name string) *dagger.Secret {
 		WithExec([]string{"vault", "kv", "get", fmt.Sprintf("-field=%s", name), appSecrets},
 			dagger.ContainerWithExecOpts{RedirectStdout: "/mysecret"})
 
+	fmt.Printf("Got %s from vault!\n", name)
 	// return Vault result as Secret
 	return vault.File("/mysecret").Secret()
 }
