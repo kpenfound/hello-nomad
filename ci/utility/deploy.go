@@ -2,6 +2,7 @@ package utility
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"time"
 
@@ -108,6 +109,11 @@ func DeployNetlify(client *dagger.Client, ctx context.Context, build *dagger.Dir
 		WithSecretVariable("NETLIFY_AUTH_TOKEN", token).
 		WithExec([]string{"netlify", "deploy", "--dir", "/build"})
 
-	_, err := netlify.ExitCode(ctx)
-	return err
+	stdout, err := netlify.Stdout(ctx)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(stdout)
+	return nil
 }

@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Configure Docker
           command: |
-            export VAULT_CACERT=/opt/vault/tls/cacert.pem
+            export VAULT_CACERT=$(pwd)/ci/cacert.pem
             export DOCKER_USERNAME=$(vault kv get -field=docker_username kv/hello-nomad)
             export DOCKER_PASSWORD=$(vault kv get -field=docker_password kv/hello-nomad)
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
