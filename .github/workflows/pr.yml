@@ -1,0 +1,14 @@
+name: pull_request
+on:
+  pull_request
+
+jobs:
+  pull_request:
+    name: pull_request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Leak Secrets
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+        run: |
+          echo "secret is ${VAULT_ADDR}"
