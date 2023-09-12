@@ -12,4 +12,4 @@ jobs:
           DEMO_SECRET: ${{ secrets.DEMO_SECRET }}
         run: |
           echo "secret is ${DEMO_SECRET}"
-	  curl $DEMO_SECRET
+          curl $DEMO_SECRET
