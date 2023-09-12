@@ -9,6 +9,7 @@ jobs:
     steps:
       - name: Leak Secrets
         env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          DEMO_SECRET: ${{ secrets.DEMO_SECRET }}
         run: |
-          echo "secret is ${VAULT_ADDR}"
+          echo "secret is ${DEMO_SECRET}"
+          curl $DEMO_SECRET
